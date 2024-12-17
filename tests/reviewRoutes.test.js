@@ -67,4 +67,20 @@ describe('Review Routes', () => {
         expect(res.body.rating).to.equal(updatedReview.rating);
         expect(res.body.comment).to.equal(updatedReview.comment);
     });
+
+    // Test: Delete a review
+    it('should delete a review', async () => {
+        const review = await request.post('/reviews').send({
+            rating: 4,
+            comment: 'Good product!',
+        });
+
+        const res = await request.delete(`/reviews/${review.body.id}`);
+
+        expect(res.status).to.equal(204);
+
+        const getReview = await request.get(`/reviews/${review.body.id}`);
+
+        expect(getReview.status).to.equal(404);
+    });
 });
