@@ -9,6 +9,18 @@ exports.getAllReviews = async (req, res) => {
     }
 };
 
+exports.getReviewById = async (req, res) => {
+    try {
+        const review = await Review.findByPk(req.params.id);
+        if (!review) {
+            return res.status(404).json({ error: 'Review not found' });
+        }
+        res.json(review);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 exports.createReview = async (req, res) => {
     try {
         const { rating, comment } = req.body;
