@@ -48,4 +48,23 @@ describe('Review Routes', () => {
         expect(res.body.rating).to.equal(4);
         expect(res.body.comment).to.equal('Good product!');
     });
+
+    // Test: Update a review
+    it('should update a review', async () => {
+        const review = await request.post('/reviews').send({
+            rating: 4,
+            comment: 'Good product!',
+        });
+
+        const updatedReview = {
+            rating: 5,
+            comment: 'Excellent product!',
+        };
+
+        const res = await request.put(`/reviews/${review.body.id}`).send(updatedReview);
+
+        expect(res.status).to.equal(200);
+        expect(res.body.rating).to.equal(updatedReview.rating);
+        expect(res.body.comment).to.equal(updatedReview.comment);
+    });
 });
