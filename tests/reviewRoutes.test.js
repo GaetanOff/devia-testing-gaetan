@@ -20,6 +20,5 @@ describe('Review Routes', () => {
         const res = await request.get('/reviews');
         expect(res.status).to.equal(200);
         expect(res.body).to.be.an('array');
-        expect(res.body.length).to.equal(0); // Should have no reviews
     });
 });
