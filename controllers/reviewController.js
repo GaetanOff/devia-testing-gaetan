@@ -8,3 +8,13 @@ exports.getAllReviews = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+exports.createReview = async (req, res) => {
+    try {
+        const { rating, comment } = req.body;
+        const review = await Review.create({ rating, comment });
+        res.status(201).json(review);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
