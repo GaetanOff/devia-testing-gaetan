@@ -44,3 +44,16 @@ exports.updateReview = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+exports.deleteReview = async (req, res) => {
+    try {
+        const review = await Review.findByPk(req.params.id);
+        if (!review) {
+            return res.status(404).json({ error: 'Review not found' });
+        }
+        await review.destroy();
+        res.status(204).send();
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
