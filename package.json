@@ -1,0 +1,28 @@
+{
+  "name": "rest-back-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "mocha tests --timeout 5000",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.1",
+    "mocha": "^11.0.1",
+    "morgan": "^1.10.0",
+    "sequelize": "^6.37.5",
+    "sqlite3": "^5.1.7",
+    "supertest": "^7.0.0"
+  }
+}
