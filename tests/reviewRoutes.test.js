@@ -15,6 +15,19 @@ describe('Review Routes', () => {
         await sequelize.sync({ force: true }); // Reset the database
     });
 
+    // Test: Create a new review
+    it('should create a new review', async () => {
+        const res = await request.post('/reviews').send({
+            rating: 5,
+            comment: 'Great product!',
+        });
+
+        expect(res.status).to.equal(201);
+        expect(res.body).to.have.property('id');
+        expect(res.body.rating).to.equal(5);
+        expect(res.body.comment).to.equal('Great product!');
+    });
+
     // Test: Retrieve all invoices
     it('should retrieve all reviews', async () => {
         const res = await request.get('/reviews');
