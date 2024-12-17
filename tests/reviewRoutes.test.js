@@ -34,4 +34,18 @@ describe('Review Routes', () => {
         expect(res.status).to.equal(200);
         expect(res.body).to.be.an('array');
     });
+
+    // Test: Retrieve a review by ID
+    it('should retrieve a review by ID', async () => {
+        const review = await request.post('/reviews').send({
+            rating: 4,
+            comment: 'Good product!',
+        });
+
+        const res = await request.get(`/reviews/${review.body.id}`);
+        expect(res.status).to.equal(200);
+        expect(res.body).to.have.property('id', review.body.id);
+        expect(res.body.rating).to.equal(4);
+        expect(res.body.comment).to.equal('Good product!');
+    });
 });
