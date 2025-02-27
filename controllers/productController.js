@@ -64,3 +64,23 @@ exports.deleteProduct = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+// FIND product by name
+exports.searchProducts = async (req, res) => {
+    try {
+        const { name } = req.query;
+        if (!name) {
+            return res.status(400).json({ message: 'Le paramètre name est requis' });
+        }
+        const products = await Product.findAll({
+            where: {
+                name: {
+                    [Op.like]: `%${name}%`
+                }
+            }
+        });
+        res.status(200).json(products);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
