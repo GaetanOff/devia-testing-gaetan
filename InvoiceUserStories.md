@@ -57,3 +57,16 @@ Afin de retirer une transaction obsolète ou incorrecte du système.
 - Le système supprime la facture correspondant à l'ID.
 - Si l'ID n'existe pas, le système renvoie une erreur 404.
 - La facture supprimée n'est plus récupérable dans la base de données.  
+
+---
+
+## 6. Filtrer les factures par statut
+En tant qu'utilisateur,
+Je souhaite pouvoir filtrer la liste des factures par statut (PENDING, PAID, CANCELLED),
+Afin de consulter rapidement uniquement les factures correspondant à l'état souhaité.
+
+### Critères d'acceptation :
+- La route GET /invoices accepte un paramètre de requête status.
+- Si le paramètre status est fourni, seules les factures dont le statut correspond à la valeur donnée sont renvoyées.
+- Si aucun paramètre n'est fourni, toutes les factures sont renvoyées.
+- En cas de valeur de statut invalide, le système peut renvoyer une erreur 400 ou simplement une liste vide, selon la logique définie.
