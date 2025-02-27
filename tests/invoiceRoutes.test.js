@@ -93,7 +93,7 @@ describe('Invoice Routes', () => {
 
         const res = await request.delete(`/invoices/${invoiceId}`);
         expect(res.status).to.equal(200);
-        expect(res.body).to.have.property('message', 'Facture supprimée avec succès'); 
+        expect(res.body).to.have.property('message', 'Facture supprimée avec succès');
     });
 
     // Test: Handle invalid invoice creation
@@ -128,5 +128,49 @@ describe('Invoice Routes', () => {
         const res = await request.delete('/invoices/9999');
         expect(res.status).to.equal(404); // Expect a 404 Not Found status
         expect(res.body).to.have.property('message', 'Facture non trouvée'); // Verify error message
+    });
+});
+
+describe('Invoice Filtering by Status', () => {
+    // Avant les tests, on réinitialise la base de données et on crée quelques factures
+    before(async () => {
+        await sequelize.sync({ force: true });
+        await request.post('/invoices').send({
+            number: 'INV-101',
+            clientName: 'Alice',
+            amount: 1000.00,
+            status: 'PENDING',
+            dueDate: '2024-12-31',
+        });
+        await request.post('/invoices').send({
+            number: 'INV-102',
+            clientName: 'Bob',
+            amount: 1500.00,
+            status: 'PAID',
+            dueDate: '2024-12-30',
+        });
+        await request.post('/invoices').send({
+            number: 'INV-103',
+            clientName: 'Charlie',
+            amount: 2000.00,
+            status: 'PENDING',
+            dueDate: '2024-12-29',
+        });
+    });
+
+    it('should return only invoices with status PENDING', async () => {
+        const res = await request.get('/invoices').query({ status: 'PENDING' });
+        expect(res.status).to.equal(200);
+        expect(res.body).to.be.an('array');
+        res.body.forEach(invoice => {
+            expect(invoice).to.have.property('status', 'PENDING');
+        });
+    });
+
+    it('should return all invoices if no status filter is provided', async () => {
+        const res = await request.get('/invoices');
+        expect(res.status).to.equal(200);
+        // On s'attend à avoir au moins les trois factures créées
+        expect(res.body.length).to.be.at.least(3);
     });
 });
