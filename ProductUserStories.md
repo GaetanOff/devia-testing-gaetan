@@ -57,3 +57,21 @@ Afin de retirer un article du catalogue.
 - Le système supprime le produit correspondant à l'ID.
 - Si l'ID n'existe pas, le système renvoie une erreur 404.
 - Le produit supprimé n'est plus récupérable dans la base de données.
+
+---
+
+## 6. Recherche de produits par nom
+En tant qu'utilisateur,
+Je souhaite pouvoir rechercher un produit par son nom,
+Afin de trouver rapidement le produit qui m'intéresse.
+
+### Critères d'acceptation :
+- Filtrage par nom :
+Lorsque l'utilisateur envoie une requête avec un paramètre de recherche (par exemple, ?name=Laptop), le système renvoie une liste de produits dont le nom correspond (ou contient) le terme recherché.
+- Gestion des cas sans correspondance :
+Si aucun produit ne correspond au terme, la réponse doit être une liste vide avec un statut 200.
+- Validation des paramètres :
+Si le paramètre de recherche est absent ou vide, le système peut renvoyer soit tous les produits, soit une erreur de validation, selon la logique métier définie.
+- Performance :
+La recherche doit être exécutée efficacement même si le nombre de produits est important (attention aux optimisations côté base de données).
+
