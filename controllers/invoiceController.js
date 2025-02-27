@@ -71,3 +71,19 @@ exports.deleteInvoice = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+// FILTER invoice by status
+exports.getAllInvoices = async (req, res) => {
+    try {
+        const { status } = req.query;
+        const queryOptions = {};
+        if (status) {
+            // Optionnel : valider ici que le statut est une des valeurs attendues
+            queryOptions.where = { status };
+        }
+        const invoices = await Invoice.findAll(queryOptions);
+        res.status(200).json(invoices);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
