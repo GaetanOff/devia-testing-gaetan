@@ -122,3 +122,41 @@ describe('Product Routes', () => {
         expect(res.body).to.have.property('message', 'Produit non trouvé');
     });
 });
+
+describe('Product Search', () => {
+    before(async () => {
+        await sequelize.sync({ force: true });
+        await request.post('/products').send({
+            name: 'Laptop Pro',
+            price: 1200.00,
+            description: 'Un laptop haut de gamme'
+        });
+        await request.post('/products').send({
+            name: 'Laptop Air',
+            price: 800.00,
+            description: 'Un laptop léger'
+        });
+        await request.post('/products').send({
+            name: 'Smartphone',
+            price: 500.00,
+            description: 'Un smartphone performant'
+        });
+    });
+
+    it('should return products matching the search term', async () => {
+        const res = await request.get('/products/search').query({ name: 'Laptop' });
+        expect(res.status).to.equal(200);
+        expect(res.body).to.be.an('array');
+        // On attend que seuls les produits "Laptop Pro" et "Laptop Air" soient retournés
+        expect(res.body.length).to.equal(2);
+        res.body.forEach(product => {
+            expect(product.name).to.include('Laptop');
+        });
+    });
+
+    it('should return an empty array if no products match the search term', async () => {
+        const res = await request.get('/products/search').query({ name: 'NonExistentProduct' });
+        expect(res.status).to.equal(200);
+        expect(res.body).to.be.an('array').that.is.empty;
+    });
+});
